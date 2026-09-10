@@ -10,14 +10,21 @@ Trang được tổ chức theo luồng chuyển đổi: **vấn đề thực t�
 
 - `index.html` — cấu trúc trang, SEO và nội dung từng section.
 - `assets/css/main.css` — hệ thống giao diện, layout, responsive và animation dùng chung.
-- `assets/css/media.css` — duy nhất phần hiển thị ảnh sản phẩm/media để tránh ảnh bị crop hoặc scale sai.
-- `assets/css/conversion.css` — các section phục vụ chuyển đổi: hero, proof, chọn máy, application, quy trình và sticky CTA.
-- `assets/js/product-data.js` — nguồn dữ liệu/thông số sản phẩm duy nhất.
-- `assets/js/main.js` — filter sản phẩm, modal, menu mobile, reveal animation và điều hướng từ nhu cầu → nhóm sản phẩm.
-- `assets/images/brand/` — logo và ảnh hero.
-- `assets/images/products/` — mỗi model dùng một file ảnh riêng, không dùng sprite.
+- `assets/css/media.css` — duy nhất phần hiển thị ảnh sản phẩm/media.
+- `assets/css/conversion.css` — hero, proof, chọn máy, application, quy trình và sticky CTA.
+- `assets/js/product-data.js` — nguồn dữ liệu/thông số sản phẩm và đường dẫn ảnh tham khảo duy nhất.
+- `assets/js/main.js` — filter sản phẩm, modal, menu mobile, reveal animation và điều hướng nhu cầu → nhóm sản phẩm.
+- `assets/images/brand/` — chỉ chứa tài sản thương hiệu TONGBAO như logo/hero.
 - `_headers` — cache asset và security headers cho Cloudflare Pages.
 - `robots.txt` — cấu hình crawl cơ bản.
+
+## Chính sách hình ảnh sản phẩm
+
+1. **Không sử dụng ảnh sản phẩm cắt từ catalogue TONGBAO.** Toàn bộ các file catalog-derived trong `assets/images/products/` đã bị xóa khỏi repository.
+2. Ảnh thiết bị đang hiển thị được lấy từ các website sản phẩm/nhà cung cấp trên web và chỉ dùng làm **ảnh tham khảo công nghệ**.
+3. Mỗi sản phẩm trong `product-data.js` có `image`, `imageAlt`, `imageSource` và `imageSourceUrl` để biết rõ nguồn ảnh.
+4. UI phải hiển thị nhãn **“Ảnh tham khảo”**; modal có liên kết về nguồn gốc ảnh để không gây hiểu nhầm đó là ảnh chính xác của model TONGBAO.
+5. Khi có ảnh thực tế/chính hãng TONGBAO chất lượng cao, thay đúng URL/asset ở `product-data.js`, không tạo thêm dữ liệu trùng.
 
 ## Nguyên tắc update
 
@@ -26,7 +33,7 @@ Trang được tổ chức theo luồng chuyển đổi: **vấn đề thực t�
 3. Style nền tảng dùng `main.css`; style media dùng `media.css`; style conversion dùng `conversion.css`.
 4. Logic tương tác tập trung trong `main.js`; không tạo script trùng chức năng.
 5. Khi đổi asset, thay đúng file đang được sử dụng và xóa asset/reference cũ.
-6. Không dùng lại sprite ảnh catalogue vì gây giảm chất lượng khi phóng lớn.
+6. Không dùng sprite hoặc ảnh catalogue cho khu vực sản phẩm.
 7. Trước deploy phải kiểm tra đường dẫn ảnh, filter, modal, mobile menu và CTA.
 
 ## Luồng nội dung hiện tại
@@ -35,7 +42,7 @@ Trang được tổ chức theo luồng chuyển đổi: **vấn đề thực t�
 2. Trust strip: giải thích quy trình chọn máy dựa trên mẫu/dây chuyền.
 3. Proof: ba nhóm bài toán chính — in date, in độ phân giải cao, khắc laser.
 4. Chọn máy: người dùng bấm nhu cầu để tự động lọc đúng nhóm sản phẩm.
-5. Sản phẩm: 9 dòng model lấy từ catalogue.
+5. Sản phẩm: 9 dòng thiết bị, thông số dựa trên tài liệu sản phẩm; ảnh sử dụng nguồn web tham khảo.
 6. Ứng dụng: chai/lọ, thùng/hộp, ống/cáp, kim loại, nhựa/film, QR/truy xuất.
 7. Quy trình test mẫu: gửi mẫu → chọn công nghệ → test → chốt cấu hình.
 8. CTA cuối + sticky CTA trên mobile/desktop.
