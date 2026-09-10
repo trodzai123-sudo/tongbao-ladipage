@@ -81,8 +81,7 @@
           </div>
           <div class="modal-use"><strong>Ứng dụng:</strong> ${product.uses}</div>
           <div class="modal-actions">
-            <a class="btn btn--primary" href="tel:0337048271">Gọi tư vấn 0337 048 271</a>
-            <a class="btn btn--ghost" href="https://zalo.me/0337048271" target="_blank" rel="noopener">Nhắn Zalo</a>
+            <a class="btn btn--primary" href="#lien-he" data-contact-link>Liên hệ TONGBAO</a>
           </div>
         </div>
       </div>`;
@@ -136,6 +135,7 @@
   document.addEventListener('click', (event) => {
     const trigger = event.target.closest('[data-open-product]');
     if (trigger) openProduct(trigger.dataset.openProduct);
+    if (event.target.closest('[data-contact-link]')) closeModal();
   });
 
   modalClose?.addEventListener('click', closeModal);
