@@ -1,0 +1,12 @@
+(function(){
+  const form=document.querySelector('[data-lead-form]');if(!form)return;
+  const result=form.querySelector('.form-result');const output=form.querySelector('pre');const status=form.querySelector('.form-status');
+  const messages={name:'Vui lòng nhập họ và tên.',phone:'Vui lòng nhập số điện thoại hợp lệ.',material:'Vui lòng mô tả sản phẩm hoặc vật liệu.'};
+  const params=new URLSearchParams(location.search);['utm_source','utm_medium','utm_campaign'].forEach(key=>{const input=form.elements[key];if(input)input.value=params.get(key)||''});
+  function validPhone(value){return /^(?:\+?84|0)[0-9 .-]{8,12}$/.test(value.trim())}
+  function validate(){let valid=true;['name','phone','material'].forEach(name=>{const input=form.elements[name];const bad=!input.value.trim()||(name==='phone'&&!validPhone(input.value));input.setAttribute('aria-invalid',String(bad));const error=form.querySelector(`[data-error-for="${name}"]`);if(error)error.textContent=bad?messages[name]:'';if(bad)valid=false});return valid}
+  function summary(data){const lines=[`YÊU CẦU TƯ VẤN TONGBAO`,`Họ tên: ${data.name}`,`Điện thoại: ${data.phone}`];if(data.company)lines.push(`Công ty/nhà máy: ${data.company}`);if(data.region)lines.push(`Khu vực: ${data.region}`);lines.push(`Sản phẩm/vật liệu: ${data.material}`);if(data.content)lines.push(`Nội dung cần in: ${data.content}`);if(data.need)lines.push(`Nhu cầu: ${data.need}`);if(data.message)lines.push(`Ghi chú: ${data.message}`);return lines.join('\n')}
+  form.addEventListener('submit',event=>{event.preventDefault();if(!validate()){status.textContent='Bạn kiểm tra lại các ô bắt buộc nhé.';form.querySelector('[aria-invalid="true"]')?.focus();return}const raw=Object.fromEntries(new FormData(form));raw.message=raw.message||raw.note||'';output.textContent=summary(raw);result.hidden=false;status.textContent='Đã tạo nội dung. Hãy sao chép và gửi qua Zalo để được tư vấn.';result.scrollIntoView({behavior:'smooth',block:'nearest'});window.dispatchEvent(new CustomEvent('tongbao:lead-ready',{detail:{source:raw.utm_source||'direct'}}))});
+  form.addEventListener('input',event=>{if(event.target.matches('[aria-invalid="true"]'))validate()});
+  form.querySelector('[data-copy-lead]')?.addEventListener('click',async event=>{try{await navigator.clipboard.writeText(output.textContent);event.currentTarget.textContent='Đã sao chép ✓'}catch{status.textContent='Hãy bôi đen nội dung và sao chép thủ công.'}});
+})();

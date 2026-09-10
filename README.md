@@ -1,52 +1,28 @@
-# TONGBAO Landing Page
+# TONGBAO landing page
 
-Landing page tĩnh cho TONGBAO Việt Nam, tối ưu chạy trực tiếp trên Cloudflare Pages và không dùng framework nặng.
+Landing page tĩnh, tối ưu cho Cloudflare Pages và hai nhóm màn hình desktop/mobile.
 
-## Mục tiêu
+## Cấu trúc
 
-Trang được tổ chức theo luồng chuyển đổi: **vấn đề thực tế → bằng chứng/ứng dụng → chọn nhóm máy → xem model → quy trình test mẫu → gửi yêu cầu tư vấn**. Không xây theo kiểu catalogue dài thuần thông số.
+- `index.html`: nội dung và thứ tự các section.
+- `assets/css/main.css`: token, component và layout chính.
+- `assets/css/media.css`: responsive tablet/mobile.
+- `assets/js/product-data.js`: dữ liệu 9 sản phẩm; sửa nội dung/ảnh tại đây.
+- `assets/js/catalog.js`: bộ lọc và modal sản phẩm.
+- `assets/js/form.js`: kiểm tra form, UTM và tạo nội dung gửi Zalo.
+- `assets/js/main.js`: menu, header và hiệu ứng xuất hiện.
+- `assets/images/products/`: ảnh WebP 4:3, kích thước 1000 × 750.
 
-## Cấu trúc source
+## Cập nhật sản phẩm
 
-- `index.html` — cấu trúc trang, SEO và nội dung từng section.
-- `assets/css/main.css` — hệ thống giao diện, layout, responsive và animation dùng chung.
-- `assets/css/media.css` — duy nhất phần hiển thị ảnh sản phẩm/media.
-- `assets/css/conversion.css` — hero, proof, chọn máy, application, quy trình và sticky CTA.
-- `assets/js/product-data.js` — nguồn dữ liệu/thông số sản phẩm và đường dẫn ảnh tham khảo duy nhất.
-- `assets/js/main.js` — filter sản phẩm, modal, menu mobile, reveal animation và điều hướng nhu cầu → nhóm sản phẩm.
-- `assets/images/brand/` — chỉ chứa tài sản thương hiệu TONGBAO như logo/hero.
-- `_headers` — cache asset và security headers cho Cloudflare Pages.
-- `robots.txt` — cấu hình crawl cơ bản.
+1. Xuất ảnh WebP tỷ lệ 4:3 vào `assets/images/products/`.
+2. Thêm hoặc sửa một object trong `assets/js/product-data.js`.
+3. Giữ ảnh dưới khoảng 200 KB để trang tải mượt trên mạng di động.
 
-## Chính sách hình ảnh sản phẩm
+## Biểu mẫu
 
-1. **Không sử dụng ảnh sản phẩm cắt từ catalogue TONGBAO.** Toàn bộ các file catalog-derived trong `assets/images/products/` đã bị xóa khỏi repository.
-2. Ảnh thiết bị đang hiển thị được lấy từ các website sản phẩm/nhà cung cấp trên web và chỉ dùng làm **ảnh tham khảo công nghệ**.
-3. Mỗi sản phẩm trong `product-data.js` có `image`, `imageAlt`, `imageSource` và `imageSourceUrl` để biết rõ nguồn ảnh.
-4. UI phải hiển thị nhãn **“Ảnh tham khảo”**; modal có liên kết về nguồn gốc ảnh để không gây hiểu nhầm đó là ảnh chính xác của model TONGBAO.
-5. Khi có ảnh thực tế/chính hãng TONGBAO chất lượng cao, thay đúng URL/asset ở `product-data.js`, không tạo thêm dữ liệu trùng.
+Biểu mẫu hiện tạo bản tóm tắt để khách sao chép và gửi Zalo. Không có dữ liệu cá nhân nào tự động gửi sang dịch vụ khác. Nếu kết nối Google Sheets/CRM sau này, bổ sung endpoint trong một module tích hợp riêng, không đặt khóa bí mật ở mã phía trình duyệt.
 
-## Nguyên tắc update
+## Triển khai
 
-1. Không nhét CSS/JS mới trực tiếp vào `index.html` khi đã có file chuyên trách.
-2. Thông số và đường dẫn ảnh sản phẩm chỉ cập nhật trong `product-data.js`.
-3. Style nền tảng dùng `main.css`; style media dùng `media.css`; style conversion dùng `conversion.css`.
-4. Logic tương tác tập trung trong `main.js`; không tạo script trùng chức năng.
-5. Khi đổi asset, thay đúng file đang được sử dụng và xóa asset/reference cũ.
-6. Không dùng sprite hoặc ảnh catalogue cho khu vực sản phẩm.
-7. Trước deploy phải kiểm tra đường dẫn ảnh, filter, modal, mobile menu và CTA.
-
-## Luồng nội dung hiện tại
-
-1. Hero: định vị TONGBAO theo hướng “đừng chọn máy trước khi biết mẫu in có đạt hay không”.
-2. Trust strip: giải thích quy trình chọn máy dựa trên mẫu/dây chuyền.
-3. Proof: ba nhóm bài toán chính — in date, in độ phân giải cao, khắc laser.
-4. Chọn máy: người dùng bấm nhu cầu để tự động lọc đúng nhóm sản phẩm.
-5. Sản phẩm: 9 dòng thiết bị, thông số dựa trên tài liệu sản phẩm; ảnh sử dụng nguồn web tham khảo.
-6. Ứng dụng: chai/lọ, thùng/hộp, ống/cáp, kim loại, nhựa/film, QR/truy xuất.
-7. Quy trình test mẫu: gửi mẫu → chọn công nghệ → test → chốt cấu hình.
-8. CTA cuối + sticky CTA trên mobile/desktop.
-
-## Deploy Cloudflare Pages
-
-Đây là static site: không cần build command. Chọn thư mục gốc repository làm output directory.
+Cloudflare Pages phục vụ trực tiếp thư mục gốc, không cần build command.
