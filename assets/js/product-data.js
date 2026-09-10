@@ -3,7 +3,6 @@ window.TONGBAO_PRODUCTS = [
     id: 'eb-plus',
     group: 'Máy in phun CIJ',
     name: 'EB+ 1580 / 1680 / 1880',
-    image: 'assets/images/products/eb-plus.webp',
     short: 'Dòng máy in phun ký tự nhỏ cho dây chuyền công nghiệp, hướng tới độ ổn định và độ tin cậy cao.',
     highlights: ['Tốc độ tới 350 m/phút ở 60 dpi', 'In 1–5 dòng, cao ký tự 2–20 mm', 'IP65, thân máy inox 304', 'Màn hình cảm ứng công nghiệp 10,1 inch'],
     specs: [
@@ -27,7 +26,6 @@ window.TONGBAO_PRODUCTS = [
     id: '100w',
     group: 'Máy in phun CIJ',
     name: 'Máy in phun ký tự nhỏ 100+W',
-    image: 'assets/images/products/100w.webp',
     short: 'Thế hệ máy in phun ký tự nhỏ với giao diện mới, cảm biến độ nhớt độc lập và thiết kế phục vụ bảo trì nhanh.',
     highlights: ['Màn hình 10,1 inch', 'Vỏ inox, cấp bảo vệ IP65', 'Làm việc -30 °C đến 60 °C', 'Hỗ trợ thay mực nhanh'],
     specs: [
@@ -46,7 +44,6 @@ window.TONGBAO_PRODUCTS = [
     id: 'online',
     group: 'Máy in phun HP',
     name: 'Dòng máy in phun trực tuyến',
-    image: 'assets/images/products/online.webp',
     short: 'Giải pháp in trực tiếp trên dây chuyền, có thể ghép 1–6 đầu in và chọn hướng phun ngang hoặc dọc.',
     highlights: ['Ghép 1–6 đầu in', 'In phun ngang hoặc dọc', 'Hỗ trợ nhiều ngôn ngữ', 'Dùng cho tấm kim loại, carton, ống, cáp, nhựa'],
     specs: [
@@ -63,7 +60,6 @@ window.TONGBAO_PRODUCTS = [
     id: 'handheld',
     group: 'Máy in phun HP',
     name: 'Máy in phun cầm tay',
-    image: 'assets/images/products/handheld.webp',
     short: 'Thiết kế cơ động cho bề mặt lớn, cong hoặc khó đưa vào dây chuyền cố định.',
     highlights: ['Cầm tay linh hoạt', 'Hỗ trợ QR / mã vạch / logo', 'Phù hợp nhiều vật liệu', 'Dễ di chuyển giữa các vị trí in'],
     specs: [
@@ -78,7 +74,6 @@ window.TONGBAO_PRODUCTS = [
     id: 'sd',
     group: 'Máy in độ phân giải cao',
     name: 'Dòng SD – hệ thống hút mực',
-    image: 'assets/images/products/sd.webp',
     short: 'Dòng máy in phun kỹ thuật số độ phân giải cao SD, phiên bản chuẩn hệ thống hút mực.',
     highlights: ['Model SD50 → SD300', 'Độ phân giải 180–600 dpi', 'Nhiều cấu hình chiều cao in', 'Phù hợp dây chuyền cần chữ/mã sắc nét'],
     specs: [
@@ -92,7 +87,6 @@ window.TONGBAO_PRODUCTS = [
     id: 'md',
     group: 'Máy in độ phân giải cao',
     name: 'Dòng MD – áp suất âm',
-    image: 'assets/images/products/md.webp',
     short: 'Dòng máy in phun kỹ thuật số độ phân giải cao MD, phiên bản chuẩn hệ thống áp suất âm.',
     highlights: ['Model MD100 → MD300S', 'Độ phân giải tới 1200 dpi', 'Giọt mực 5–7 pL tùy model', 'Tốc độ cấu hình tới 600 theo bảng thông số'],
     specs: [
@@ -108,7 +102,6 @@ window.TONGBAO_PRODUCTS = [
     id: 'fiber-laser',
     group: 'Khắc laser',
     name: 'Máy khắc laser sợi quang',
-    image: 'assets/images/products/fiber-laser.webp',
     short: 'Khắc vĩnh viễn bằng chùm laser năng lượng cao, phù hợp sản xuất tự động và các mã nhận dạng chính xác.',
     highlights: ['10W–100W', 'Tốc độ tới 15.000 mm/s', 'Đường khắc tối thiểu 0,01 mm', 'Ứng dụng VIN, QR, UDI'],
     specs: [
@@ -124,7 +117,6 @@ window.TONGBAO_PRODUCTS = [
     id: 'uv-laser',
     group: 'Khắc laser',
     name: 'Máy khắc laser UV 355 nm',
-    image: 'assets/images/products/uv-laser.webp',
     short: 'Công nghệ “gia công lạnh” với vùng ảnh hưởng nhiệt nhỏ, phù hợp vật liệu nhạy cảm và yêu cầu khắc tinh xảo.',
     highlights: ['Bước sóng 355 nm', '3W–15W', 'Đường khắc khoảng 0,02–0,05 mm', 'Phù hợp nhựa, thủy tinh, gốm sứ, bao bì y tế'],
     specs: [
@@ -141,7 +133,6 @@ window.TONGBAO_PRODUCTS = [
     id: 'co2-laser',
     group: 'Khắc laser',
     name: 'Máy laser CO₂ 10,6 μm',
-    image: 'assets/images/products/co2-laser.webp',
     short: 'Laser CO₂ cho vật liệu phi kim, tận dụng bước sóng 10,6 μm được hấp thụ tốt bởi nhiều vật liệu phổ biến.',
     highlights: ['Bước sóng 10,6 μm', '40W–150W', 'Phù hợp vật liệu phi kim', 'Làm mát bằng không khí hoặc nước'],
     specs: [
