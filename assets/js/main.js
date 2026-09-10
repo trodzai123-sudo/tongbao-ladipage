@@ -15,7 +15,12 @@
   function productVisual(product, extraClass = '', eager = false) {
     const loading = eager ? 'eager' : 'lazy';
     const priority = eager ? ' fetchpriority="high"' : '';
-    return `<img class="product-image ${extraClass}" src="${product.image}" alt="${product.name}" loading="${loading}" decoding="async"${priority}>`;
+    const alt = product.imageAlt || `Ảnh tham khảo ${product.name}`;
+    return `<img class="product-image ${extraClass}" src="${product.image}" alt="${alt}" loading="${loading}" decoding="async" referrerpolicy="no-referrer"${priority}>`;
+  }
+
+  function sourceBadge(product) {
+    return `<span class="image-ref-badge" title="Ảnh tham khảo từ nguồn web">Ảnh tham khảo</span>`;
   }
 
   function cardTemplate(product) {
@@ -24,6 +29,7 @@
         <div class="product-media">
           ${productVisual(product)}
           <span class="product-chip">${product.group}</span>
+          ${sourceBadge(product)}
         </div>
         <div class="product-card__body">
           <h3>${product.name}</h3>
@@ -65,13 +71,21 @@
     const product = products.find(p => p.id === id);
     if (!product || !modal || !modalBody) return;
 
+    const sourceLine = product.imageSourceUrl
+      ? `<p class="image-source-line">Ảnh minh họa công nghệ: <a href="${product.imageSourceUrl}" target="_blank" rel="noopener noreferrer">${product.imageSource || 'Nguồn web'}</a>. Hình ảnh không dùng từ catalogue TONGBAO.</p>`
+      : '';
+
     modalBody.innerHTML = `
       <div class="modal-product">
-        <div class="modal-product__image">${productVisual(product, 'product-image--modal', true)}</div>
+        <div class="modal-product__image">
+          ${productVisual(product, 'product-image--modal', true)}
+          ${sourceBadge(product)}
+        </div>
         <div class="modal-product__content">
           <span class="eyebrow">${product.group}</span>
           <h2>${product.name}</h2>
           <p class="modal-lead">${product.short}</p>
+          ${sourceLine}
           <div class="spec-table" role="table" aria-label="Thông số ${product.name}">
             ${product.specs.map(([label, value]) => `
               <div class="spec-row" role="row"><strong role="cell">${label}</strong><span role="cell">${value}</span></div>`).join('')}
