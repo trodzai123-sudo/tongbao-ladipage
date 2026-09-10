@@ -8,6 +8,7 @@
   const menuBtn = document.querySelector('[data-menu-btn]');
   const nav = document.querySelector('[data-nav]');
   const header = document.querySelector('.site-header');
+  const productSection = document.querySelector('#san-pham');
 
   const iconArrow = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 
@@ -52,30 +53,31 @@
     `).join('');
   }
 
+  function setFilter(group) {
+    if (!filterWrap) return;
+    filterWrap.querySelectorAll('[data-filter]').forEach(btn => {
+      btn.classList.toggle('is-active', btn.dataset.filter === group);
+    });
+    renderProducts(group);
+  }
+
   function openProduct(id) {
     const product = products.find(p => p.id === id);
     if (!product || !modal || !modalBody) return;
 
     modalBody.innerHTML = `
       <div class="modal-product">
-        <div class="modal-product__image">
-          ${productVisual(product, 'product-image--modal', true)}
-        </div>
+        <div class="modal-product__image">${productVisual(product, 'product-image--modal', true)}</div>
         <div class="modal-product__content">
           <span class="eyebrow">${product.group}</span>
           <h2>${product.name}</h2>
           <p class="modal-lead">${product.short}</p>
           <div class="spec-table" role="table" aria-label="Thông số ${product.name}">
             ${product.specs.map(([label, value]) => `
-              <div class="spec-row" role="row">
-                <strong role="cell">${label}</strong>
-                <span role="cell">${value}</span>
-              </div>`).join('')}
+              <div class="spec-row" role="row"><strong role="cell">${label}</strong><span role="cell">${value}</span></div>`).join('')}
           </div>
           <div class="modal-use"><strong>Ứng dụng:</strong> ${product.uses}</div>
-          <div class="modal-actions">
-            <a class="btn btn--primary" href="#lien-he" data-contact-link>Liên hệ TONGBAO</a>
-          </div>
+          <div class="modal-actions"><a class="btn btn--primary" href="#lien-he" data-contact-link>Gửi mẫu để tư vấn</a></div>
         </div>
       </div>`;
 
@@ -106,7 +108,6 @@
         }
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -40px' });
-
     nodes.forEach(node => {
       node.dataset.revealBound = '1';
       observer.observe(node);
@@ -120,14 +121,19 @@
   filterWrap?.addEventListener('click', (event) => {
     const btn = event.target.closest('[data-filter]');
     if (!btn) return;
-    filterWrap.querySelectorAll('.filter-btn').forEach(el => el.classList.remove('is-active'));
-    btn.classList.add('is-active');
-    renderProducts(btn.dataset.filter);
+    setFilter(btn.dataset.filter);
   });
 
   document.addEventListener('click', (event) => {
     const trigger = event.target.closest('[data-open-product]');
     if (trigger) openProduct(trigger.dataset.openProduct);
+
+    const fit = event.target.closest('[data-fit-group]');
+    if (fit) {
+      setFilter(fit.dataset.fitGroup);
+      productSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
     if (event.target.closest('[data-contact-link]')) closeModal();
   });
 
