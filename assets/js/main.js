@@ -11,17 +11,10 @@
 
   const iconArrow = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 
-  function productSpriteStyle(product) {
-    const index = Math.max(0, products.indexOf(product));
-    const col = index % 3;
-    const row = Math.floor(index / 3);
-    const x = col === 0 ? 0 : col === 1 ? 50 : 100;
-    const y = row === 0 ? 0 : row === 1 ? 50 : 100;
-    return `--sx:${x}%;--sy:${y}%`;
-  }
-
-  function productVisual(product, extraClass = '') {
-    return `<div class="product-sprite ${extraClass}" style="${productSpriteStyle(product)}" role="img" aria-label="${product.name}"></div>`;
+  function productVisual(product, extraClass = '', eager = false) {
+    const loading = eager ? 'eager' : 'lazy';
+    const priority = eager ? ' fetchpriority="high"' : '';
+    return `<img class="product-image ${extraClass}" src="${product.image}" alt="${product.name}" loading="${loading}" decoding="async"${priority}>`;
   }
 
   function cardTemplate(product) {
@@ -66,7 +59,7 @@
     modalBody.innerHTML = `
       <div class="modal-product">
         <div class="modal-product__image">
-          ${productVisual(product, 'product-sprite--modal')}
+          ${productVisual(product, 'product-image--modal', true)}
         </div>
         <div class="modal-product__content">
           <span class="eyebrow">${product.group}</span>
