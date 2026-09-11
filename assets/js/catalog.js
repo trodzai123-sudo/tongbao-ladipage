@@ -40,7 +40,8 @@
 
   function openProduct(id){
     const item=products.find(product=>product.id===id);if(!item||!modal||!body)return;
-    body.innerHTML=`<div class="modal-product">${galleryMarkup(item)}<div><span class="eyebrow">${item.group}</span><h2>${item.name}</h2><p class="modal-lead">${item.short}</p><div class="spec-table">${item.specs.map(([key,value])=>`<div class="spec-row"><strong>${key}</strong><span>${value}</span></div>`).join('')}</div><p class="modal-use"><strong>Ứng dụng:</strong> ${item.uses}</p><div class="modal-actions"><a class="button button-primary" href="#lien-he" data-modal-contact>Gửi mẫu để tư vấn</a></div></div></div>`;
+    const note=item.note?`<p class="modal-note">${item.note}</p>`:'';
+    body.innerHTML=`<div class="modal-product">${galleryMarkup(item)}<div><span class="eyebrow">${item.group}</span><h2>${item.name}</h2><p class="modal-lead">${item.short}</p><div class="spec-table">${item.specs.map(([key,value])=>`<div class="spec-row"><strong>${key}</strong><span>${value}</span></div>`).join('')}</div><p class="modal-use"><strong>Ứng dụng:</strong> ${item.uses}</p>${note}<div class="modal-actions"><a class="button button-primary" href="#lien-he" data-modal-contact>Gửi mẫu để tư vấn</a></div></div></div>`;
     clearTimeout(closeTimer);modal.hidden=false;modal.classList.remove('is-open');document.body.classList.add('modal-open');void modal.offsetWidth;modal.classList.add('is-open');close?.focus();
   }
 
