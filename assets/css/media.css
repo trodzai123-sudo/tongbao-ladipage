@@ -65,6 +65,7 @@
   .hero{padding:48px 0px 52px}
   .hero-pattern{background-size:38px 38px}
   .hero h1{font-size:2.7rem;line-height:1;letter-spacing:-.05em}
+  .hero h1>span{font-size:.9em;white-space:normal}
   .hero-copy>p{font-size:.96rem}
   .hero-benefits{grid-template-columns:1fr;margin:24px 0 26px}
   .hero-benefits li,.hero-benefits li:first-child{padding:12px 0;border-right:0;border-bottom:1px solid rgba(255,255,255,.13)}
