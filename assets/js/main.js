@@ -60,8 +60,8 @@
       <button class="consult-close" type="button" aria-label="Đóng biểu mẫu" data-consult-close>×</button>
       <div class="consult-head">
         <span class="eyebrow">Nhận tư vấn nhanh</span>
-        <h2 id="consult-title">Gửi nhu cầu — TONGBAO khoanh đúng máy cho bạn.</h2>
-        <p>Điền thông tin ngay tại đây, không cần kéo xuống cuối trang. Sau khi tạo nội dung, bạn có thể gọi, gửi Zalo cho ${CONTACT.advisor} hoặc nhắn Messenger.</p>
+        <h2 id="consult-title">Để lại 4 thông tin — TONGBAO tư vấn đúng nhu cầu.</h2>
+        <p>Biểu mẫu tối giản, chỉ mất khoảng 30 giây. Sau đó bạn có thể gọi, gửi Zalo cho ${CONTACT.advisor} hoặc nhắn Messenger.</p>
         <div class="consult-channel-note" data-consult-channel-note>Đang mở biểu mẫu tư vấn nhanh</div>
       </div>
       <div class="consult-body">
@@ -69,12 +69,8 @@
           <div class="consult-grid">
             <label><span>Họ và tên *</span><input name="name" autocomplete="name" required placeholder="Nguyễn Văn A"><small class="consult-error" data-consult-error="name"></small></label>
             <label><span>Số điện thoại *</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="09xx xxx xxx"><small class="consult-error" data-consult-error="phone"></small></label>
-            <label><span>Công ty / nhà máy</span><input name="company" autocomplete="organization" placeholder="Tên doanh nghiệp"></label>
-            <label><span>Khu vực</span><input name="region" autocomplete="address-level1" placeholder="Tỉnh / thành phố"></label>
-            <label class="consult-span"><span>Sản phẩm hoặc vật liệu cần in *</span><input name="material" required placeholder="Ví dụ: chai PET, túi nhựa, ống thép..."><small class="consult-error" data-consult-error="material"></small></label>
-            <label><span>Nội dung cần in</span><select name="content"><option value="">Chọn nội dung</option><option>Ngày sản xuất / hạn dùng</option><option>Số lô / serial</option><option>QR / mã vạch</option><option>Logo / đồ họa</option><option>Khắc vĩnh viễn</option></select></label>
-            <label><span>Nhu cầu hiện tại</span><select name="need"><option value="">Chọn nhu cầu</option><option>Mua máy mới</option><option>Thay máy cũ</option><option>Cần test mẫu</option><option>Cần tư vấn thêm</option></select></label>
-            <label class="consult-span"><span>Ghi chú về dây chuyền</span><textarea name="note" rows="3" placeholder="Tốc độ, vị trí lắp, kích thước vùng in hoặc model đang dùng..."></textarea></label>
+            <label><span>Nội dung cần in *</span><select name="content" required><option value="">Chọn nội dung cần in</option><option>Ngày sản xuất / hạn dùng</option><option>Số lô / serial</option><option>QR / mã vạch</option><option>Logo / đồ họa</option><option>Khắc vĩnh viễn</option></select><small class="consult-error" data-consult-error="content"></small></label>
+            <label><span>Nhu cầu hiện tại *</span><select name="need" required><option value="">Chọn nhu cầu hiện tại</option><option>Mua máy mới</option><option>Thay máy cũ</option><option>Cần test mẫu</option><option>Cần tư vấn thêm</option></select><small class="consult-error" data-consult-error="need"></small></label>
           </div>
           <button class="button button-primary consult-submit" type="submit">Tạo nội dung gửi tư vấn</button>
           <p class="consult-status" data-consult-status aria-live="polite"></p>
@@ -101,10 +97,10 @@
   let lastFocus=null;
 
   function channelFromTrigger(trigger){
-    if(trigger?.classList.contains('floating-contact__phone'))return 'Bạn đang chọn gọi điện — điền nhanh thông tin nếu muốn Mrs.Miến nắm nhu cầu trước.';
-    if(trigger?.classList.contains('floating-contact__zalo'))return 'Bạn đang chọn Zalo — điền nhanh thông tin rồi gửi nội dung cho Mrs.Miến.';
-    if(trigger?.classList.contains('floating-contact__messenger'))return 'Bạn đang chọn Messenger — điền nhanh thông tin rồi nhắn Facebook.';
-    return 'Biểu mẫu tư vấn nhanh — không cần kéo xuống cuối trang.';
+    if(trigger?.classList.contains('floating-contact__phone'))return 'Bạn đang chọn gọi điện — điền nhanh 4 thông tin để Mrs.Miến nắm nhu cầu trước.';
+    if(trigger?.classList.contains('floating-contact__zalo'))return 'Bạn đang chọn Zalo — điền nhanh 4 thông tin rồi gửi cho Mrs.Miến.';
+    if(trigger?.classList.contains('floating-contact__messenger'))return 'Bạn đang chọn Messenger — điền nhanh 4 thông tin rồi nhắn Facebook.';
+    return 'Biểu mẫu tư vấn nhanh — chỉ 4 thông tin, không cần kéo xuống cuối trang.';
   }
 
   function openConsult(trigger){
@@ -128,9 +124,14 @@
 
   function validPhone(value){return /^(?:\+?84|0)[0-9 .-]{8,12}$/.test(value.trim())}
   function validateConsult(){
-    const messages={name:'Vui lòng nhập họ và tên.',phone:'Vui lòng nhập số điện thoại hợp lệ.',material:'Vui lòng mô tả sản phẩm hoặc vật liệu.'};
+    const messages={
+      name:'Vui lòng nhập họ và tên.',
+      phone:'Vui lòng nhập số điện thoại hợp lệ.',
+      content:'Vui lòng chọn nội dung cần in.',
+      need:'Vui lòng chọn nhu cầu hiện tại.'
+    };
     let valid=true;
-    ['name','phone','material'].forEach(name=>{
+    ['name','phone','content','need'].forEach(name=>{
       const input=consultForm.elements[name];
       const bad=!input.value.trim()||(name==='phone'&&!validPhone(input.value));
       input.setAttribute('aria-invalid',String(bad));
@@ -142,14 +143,13 @@
   }
 
   function buildSummary(data){
-    const lines=['YÊU CẦU TƯ VẤN TONGBAO',`Họ tên: ${data.name}`,`Điện thoại: ${data.phone}`];
-    if(data.company)lines.push(`Công ty/nhà máy: ${data.company}`);
-    if(data.region)lines.push(`Khu vực: ${data.region}`);
-    lines.push(`Sản phẩm/vật liệu: ${data.material}`);
-    if(data.content)lines.push(`Nội dung cần in: ${data.content}`);
-    if(data.need)lines.push(`Nhu cầu: ${data.need}`);
-    if(data.note)lines.push(`Ghi chú: ${data.note}`);
-    return lines.join('\n');
+    return [
+      'YÊU CẦU TƯ VẤN TONGBAO',
+      `Họ tên: ${data.name}`,
+      `Điện thoại: ${data.phone}`,
+      `Nội dung cần in: ${data.content}`,
+      `Nhu cầu hiện tại: ${data.need}`
+    ].join('\n');
   }
 
   document.addEventListener('click',event=>{
@@ -168,11 +168,14 @@
   consultForm?.addEventListener('input',event=>{
     if(event.target.matches('[aria-invalid="true"]'))validateConsult();
   });
+  consultForm?.addEventListener('change',event=>{
+    if(event.target.matches('[aria-invalid="true"]'))validateConsult();
+  });
 
   consultForm?.addEventListener('submit',event=>{
     event.preventDefault();
     if(!validateConsult()){
-      consultStatus.textContent='Bạn kiểm tra lại các ô bắt buộc nhé.';
+      consultStatus.textContent='Bạn điền đủ 4 thông tin giúp TONGBAO nhé.';
       consultForm.querySelector('[aria-invalid="true"]')?.focus();
       return;
     }
