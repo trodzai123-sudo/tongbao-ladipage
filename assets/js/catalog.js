@@ -7,6 +7,12 @@
   const close=document.querySelector('[data-modal-close]');
   const groups=['Tất cả',...new Set(products.map(item=>item.group))];
   let closeTimer;
+  const canAutoFocus=matchMedia('(hover:hover) and (pointer:fine)').matches;
+  const focusWithoutScroll=element=>{
+    if(!element)return;
+    try{element.focus({preventScroll:true})}
+    catch{if(canAutoFocus)element.focus()}
+  };
 
   const imagesFor=item=>Array.isArray(item.gallery)&&item.gallery.length?item.gallery:[item.image];
   const card=item=>{
@@ -42,7 +48,7 @@
     const item=products.find(product=>product.id===id);if(!item||!modal||!body)return;
     const note=item.note?`<p class="modal-note">${item.note}</p>`:'';
     body.innerHTML=`<div class="modal-product">${galleryMarkup(item)}<div><span class="eyebrow">${item.group}</span><h2>${item.name}</h2><p class="modal-lead">${item.short}</p><div class="spec-table">${item.specs.map(([key,value])=>`<div class="spec-row"><strong>${key}</strong><span>${value}</span></div>`).join('')}</div><p class="modal-use"><strong>Ứng dụng:</strong> ${item.uses}</p>${note}<div class="modal-actions"><a class="button button-primary" href="#lien-he" data-modal-contact>Gửi mẫu để tư vấn</a></div></div></div>`;
-    clearTimeout(closeTimer);modal.hidden=false;modal.classList.remove('is-open');document.body.classList.add('modal-open');void modal.offsetWidth;modal.classList.add('is-open');close?.focus();
+    clearTimeout(closeTimer);modal.hidden=false;modal.classList.remove('is-open');document.body.classList.add('modal-open');void modal.offsetWidth;modal.classList.add('is-open');if(canAutoFocus)focusWithoutScroll(close);
   }
 
   function closeModal(){

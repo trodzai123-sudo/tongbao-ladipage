@@ -1,4 +1,23 @@
 (function(){
+  // Mobile browsers may restore an old scroll position before the dynamic
+  // product grid is rendered. A clean visit without a fragment must start
+  // at the hero instead of inheriting the previous page position.
+  const resetOnEntry=!location.hash||location.hash==='#top';
+  if('scrollRestoration'in history)history.scrollRestoration='manual';
+  const resetEntryScroll=()=>{
+    if(!resetOnEntry||scrollY===0)return;
+    const previousBehavior=document.documentElement.style.scrollBehavior;
+    document.documentElement.style.scrollBehavior='auto';
+    scrollTo(0,0);
+    document.documentElement.style.scrollBehavior=previousBehavior;
+  };
+  if(resetOnEntry){
+    resetEntryScroll();
+    requestAnimationFrame(resetEntryScroll);
+    addEventListener('load',()=>requestAnimationFrame(resetEntryScroll),{once:true});
+    addEventListener('pageshow',()=>requestAnimationFrame(resetEntryScroll));
+  }
+
   const header=document.querySelector('[data-header]');
   const button=document.querySelector('[data-menu-button]');
   const nav=document.querySelector('[data-nav]');
@@ -94,13 +113,22 @@
   const consultSummary=modal.querySelector('[data-consult-summary]');
   const consultStatus=modal.querySelector('[data-consult-status]');
   let lastFocus=null;
+  const canAutoFocus=matchMedia('(hover:hover) and (pointer:fine)').matches;
+  const focusWithoutScroll=element=>{
+    if(!element)return;
+    try{element.focus({preventScroll:true})}
+    catch{if(canAutoFocus)element.focus()}
+  };
 
   function openConsult(){
     lastFocus=document.activeElement;
     modal.hidden=false;
     document.body.classList.add('consult-open');
     requestAnimationFrame(()=>modal.classList.add('is-open'));
-    setTimeout(()=>consultForm?.elements.name?.focus(),100);
+    // Avoid opening the software keyboard and dragging iOS/Android to the
+    // DOM position of this fixed modal. Desktop keyboard users still receive
+    // focus inside the dialog.
+    if(canAutoFocus)setTimeout(()=>focusWithoutScroll(consultForm?.elements.name),100);
   }
 
   function closeConsult(){
@@ -109,7 +137,7 @@
     document.body.classList.remove('consult-open');
     setTimeout(()=>{
       modal.hidden=true;
-      if(lastFocus&&typeof lastFocus.focus==='function')lastFocus.focus();
+      if(canAutoFocus&&lastFocus&&typeof lastFocus.focus==='function')focusWithoutScroll(lastFocus);
     },180);
   }
 
