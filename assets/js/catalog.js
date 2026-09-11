@@ -13,7 +13,7 @@
     const images=imagesFor(item);
     const galleryClass=images.length>1?' product-media--gallery':'';
     const count=images.length>1?`<span class="product-gallery-count">${images.length} ảnh</span>`:'';
-    return `<article class="product-card reveal" data-product-id="${item.id}"><div class="product-media${galleryClass}"><img src="${item.image}" alt="${item.name}" width="1000" height="750" loading="lazy" decoding="async"><span class="product-chip">${item.group}</span><span class="product-source">${item.source}</span>${count}</div><div class="product-body"><h3>${item.name}</h3><p>${item.short}</p><ul class="mini-specs">${item.highlights.map(value=>`<li>${value}</li>`).join('')}</ul><button class="card-link" type="button" data-open-product="${item.id}">Xem thông số →</button></div></article>`;
+    return `<article class="product-card reveal" data-product-id="${item.id}" data-open-product="${item.id}" role="button" tabindex="0" aria-label="Xem thông số ${item.name}" style="cursor:pointer"><div class="product-media${galleryClass}"><img src="${item.image}" alt="${item.name}" width="1000" height="750" loading="lazy" decoding="async"><span class="product-chip">${item.group}</span><span class="product-source">${item.source}</span>${count}</div><div class="product-body"><h3>${item.name}</h3><p>${item.short}</p><ul class="mini-specs">${item.highlights.map(value=>`<li>${value}</li>`).join('')}</ul><span class="card-link" aria-hidden="true">Xem thông số →</span></div></article>`;
   };
 
   function render(group='Tất cả'){
@@ -74,5 +74,12 @@
 
   close?.addEventListener('click',closeModal);
   modal?.addEventListener('click',event=>{if(event.target===modal)closeModal();});
-  document.addEventListener('keydown',event=>{if(event.key==='Escape')closeModal();});
+  document.addEventListener('keydown',event=>{
+    if(event.key==='Escape')closeModal();
+    const trigger=event.target.closest?.('[data-open-product]');
+    if(trigger&&(event.key==='Enter'||event.key===' ')){
+      event.preventDefault();
+      openProduct(trigger.dataset.openProduct);
+    }
+  });
 })();
