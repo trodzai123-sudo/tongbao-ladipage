@@ -3,6 +3,73 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <script>
+    (function(){
+      var entryHash=location.hash.toLowerCase();
+      var staleContactHash=entryHash==='#lien-he';
+      var mustStartAtTop=!entryHash||entryHash==='#top'||staleContactHash;
+      var root=document.documentElement;
+      var previousBehavior=root.style.scrollBehavior;
+      var active=mustStartAtTop;
+      var timers=[];
+
+      if('scrollRestoration'in history)history.scrollRestoration='manual';
+
+      // A consultation CTA is handled as a modal after the page is ready.
+      // Remove a retained/deep-linked contact fragment before the browser can
+      // resolve it and drag mobile visitors to the contact section.
+      if(staleContactHash){
+        history.replaceState(history.state,'',location.pathname+location.search);
+      }
+
+      function reset(){
+        if(!active)return;
+        root.style.scrollBehavior='auto';
+        root.scrollTop=0;
+        if(document.body)document.body.scrollTop=0;
+        scrollTo(0,0);
+      }
+
+      function schedule(){
+        reset();
+        [0,80,260,700,1400].forEach(function(delay){
+          timers.push(setTimeout(reset,delay));
+        });
+      }
+
+      function stop(){
+        if(!active)return;
+        active=false;
+        timers.forEach(clearTimeout);
+        timers=[];
+        root.style.scrollBehavior=previousBehavior;
+      }
+
+      if(mustStartAtTop){
+        schedule();
+        document.addEventListener('DOMContentLoaded',schedule,{once:true});
+        addEventListener('load',function(){
+          schedule();
+          timers.push(setTimeout(stop,1800));
+        },{once:true});
+        addEventListener('pageshow',function(event){
+          if(event.persisted&&(!location.hash||location.hash==='#top')){
+            active=true;
+            root.style.scrollBehavior='auto';
+            schedule();
+            timers.push(setTimeout(stop,1800));
+          }else{
+            reset();
+          }
+        });
+        ['pointerdown','touchstart','wheel'].forEach(function(type){
+          addEventListener(type,stop,{once:true,passive:true});
+        });
+        addEventListener('keydown',stop,{once:true});
+        addEventListener('hashchange',stop,{once:true});
+      }
+    })();
+  </script>
   <title>TONGBAO | Máy in date, in mã & khắc laser công nghiệp</title>
   <meta name="description" content="TONGBAO tư vấn máy in date, in mã và khắc laser theo vật liệu, nội dung và tốc độ dây chuyền. Gửi mẫu để chọn đúng công nghệ và cấu hình.">
   <meta name="theme-color" content="#061a35">
@@ -245,6 +312,6 @@
   <script src="assets/js/product-data.js?v=20260911-final1" defer></script>
   <script src="assets/js/catalog.js?v=20260911-scrollfix1" defer></script>
   <script src="assets/js/form.js?v=20260911-layout" defer></script>
-  <script src="assets/js/main.js?v=20260911-scrollfix1" defer></script>
+  <script src="assets/js/main.js?v=20260911-scrollfix2" defer></script>
 </body>
 </html>

@@ -1,23 +1,4 @@
 (function(){
-  // Mobile browsers may restore an old scroll position before the dynamic
-  // product grid is rendered. A clean visit without a fragment must start
-  // at the hero instead of inheriting the previous page position.
-  const resetOnEntry=!location.hash||location.hash==='#top';
-  if('scrollRestoration'in history)history.scrollRestoration='manual';
-  const resetEntryScroll=()=>{
-    if(!resetOnEntry||scrollY===0)return;
-    const previousBehavior=document.documentElement.style.scrollBehavior;
-    document.documentElement.style.scrollBehavior='auto';
-    scrollTo(0,0);
-    document.documentElement.style.scrollBehavior=previousBehavior;
-  };
-  if(resetOnEntry){
-    resetEntryScroll();
-    requestAnimationFrame(resetEntryScroll);
-    addEventListener('load',()=>requestAnimationFrame(resetEntryScroll),{once:true});
-    addEventListener('pageshow',()=>requestAnimationFrame(resetEntryScroll));
-  }
-
   const header=document.querySelector('[data-header]');
   const button=document.querySelector('[data-menu-button]');
   const nav=document.querySelector('[data-nav]');
