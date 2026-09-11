@@ -1,10 +1,10 @@
 # TONGBAO landing page
 
-Landing page tĩnh, tối ưu cho Cloudflare Pages và hai nhóm màn hình desktop/mobile.
+Landing page tĩnh B2B cho thiết bị in mã công nghiệp, tối ưu Cloudflare Pages và hai nhóm màn hình desktop/mobile.
 
 ## Cấu trúc
 
-- `index.html`: nội dung và thứ tự các section.
+- `index.html`: nội dung và thứ tự các section: hero, cam kết, giải pháp, catalog, ứng dụng, quy trình, FAQ và biểu mẫu.
 - `assets/css/main.css`: token, component và layout chính.
 - `assets/css/media.css`: responsive tablet/mobile.
 - `assets/js/product-data.js`: dữ liệu 9 sản phẩm; sửa nội dung/ảnh tại đây.
@@ -19,6 +19,13 @@ Landing page tĩnh, tối ưu cho Cloudflare Pages và hai nhóm màn hình desk
 2. Xuất ảnh WebP tỷ lệ 4:3 vào `assets/images/catalog-products/`; không dùng khung hình cắt từ video.
 3. Thêm hoặc sửa một object trong `assets/js/product-data.js`.
 4. Giữ ảnh dưới khoảng 200 KB để trang tải mượt trên mạng di động.
+
+## Nguyên tắc bố cục
+
+- Hero phải nêu rõ ba nhóm nhu cầu: in date, in mã và khắc laser.
+- Danh mục chỉ chứa 9 dòng máy đã đối chiếu catalog.
+- Không dùng popup tự bật che nội dung; CTA dẫn về biểu mẫu cuối trang.
+- Các phần ứng dụng và FAQ dùng HTML/CSS thuần để dễ sửa và tải nhanh.
 
 ## Biểu mẫu
 
