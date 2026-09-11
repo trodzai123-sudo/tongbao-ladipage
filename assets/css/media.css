@@ -12,6 +12,12 @@
 .modal-product .product-gallery__thumb img{display:block;width:100%;aspect-ratio:1/1;object-fit:contain;padding:2px;background:#fff;border-radius:6px}
 .product-gallery__thumb.is-active{border-color:var(--blue);box-shadow:0 0 0 2px rgba(10,103,232,.12)}
 
+/* Fiber laser: keep the full tall machine visible inside the 4:3 product frame. */
+.product-card[data-product-id="fiber-laser"] .product-media{background:#fff}
+.product-card[data-product-id="fiber-laser"] .product-media img{object-fit:contain;padding:14px 28px;background:#fff;transform:none}
+.product-card[data-product-id="fiber-laser"]:hover .product-media img{transform:scale(1.015)}
+.modal-product img[src*="fiber-laser-tongbao-v2.jpg"]{object-fit:contain;padding:14px;background:#fff}
+
 @media(max-width:1100px){
   .nav{gap:17px}
   .nav a{font-size:.82rem}
@@ -129,6 +135,8 @@
   .spec-row{grid-template-columns:1fr;gap:2px}
   .product-gallery__thumbs{gap:6px}
   .product-gallery__thumb{padding:2px;border-radius:7px}
+  .product-card[data-product-id="fiber-laser"] .product-media img{padding:10px 20px}
+  .modal-product img[src*="fiber-laser-tongbao-v2.jpg"]{padding:8px}
   .mobile-actions{position:fixed;display:grid;grid-template-columns:repeat(3,1fr);z-index:200;left:0;right:0;bottom:0;height:58px;background:#fff;border-top:1px solid var(--line);padding:7px max(8px,env(safe-area-inset-left));box-shadow:0 -8px 30px rgba(5,23,48,.12)}
   .mobile-actions a{display:grid;place-items:center;font-size:.74rem;font-weight:850;border-right:1px solid var(--line)}
   .mobile-actions a:last-child{border:0;background:var(--blue);color:#fff;border-radius:8px}
