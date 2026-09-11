@@ -11,13 +11,14 @@ Landing page tĩnh, tối ưu cho Cloudflare Pages và hai nhóm màn hình desk
 - `assets/js/catalog.js`: bộ lọc và modal sản phẩm.
 - `assets/js/form.js`: kiểm tra form, UTM và tạo nội dung gửi Zalo.
 - `assets/js/main.js`: menu, header và hiệu ứng xuất hiện.
-- `assets/images/products/`: ảnh WebP 4:3, kích thước 1000 × 750.
+- `assets/images/catalog-products/`: bộ ảnh sản phẩm WebP 4:3, kích thước 1000 × 750, dựng theo ảnh tham chiếu trong catalog.
 
 ## Cập nhật sản phẩm
 
-1. Xuất ảnh WebP tỷ lệ 4:3 vào `assets/images/products/`.
-2. Thêm hoặc sửa một object trong `assets/js/product-data.js`.
-3. Giữ ảnh dưới khoảng 200 KB để trang tải mượt trên mạng di động.
+1. Chỉ thêm sản phẩm đã xuất hiện trong catalog được duyệt.
+2. Xuất ảnh WebP tỷ lệ 4:3 vào `assets/images/catalog-products/`; không dùng khung hình cắt từ video.
+3. Thêm hoặc sửa một object trong `assets/js/product-data.js`.
+4. Giữ ảnh dưới khoảng 200 KB để trang tải mượt trên mạng di động.
 
 ## Biểu mẫu
 
