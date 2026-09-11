@@ -62,7 +62,7 @@
         <span class="eyebrow">Nhận tư vấn nhanh</span>
         <h2 id="consult-title">Để lại 4 thông tin — TONGBAO tư vấn đúng nhu cầu.</h2>
         <p>Biểu mẫu tối giản, chỉ mất khoảng 30 giây. Sau đó bạn có thể gọi, gửi Zalo cho ${CONTACT.advisor} hoặc nhắn Messenger.</p>
-        <div class="consult-channel-note" data-consult-channel-note>Đang mở biểu mẫu tư vấn nhanh</div>
+        <div class="consult-channel-note">Biểu mẫu tư vấn nhanh — chỉ 4 thông tin.</div>
       </div>
       <div class="consult-body">
         <form class="consult-form" data-consult-form novalidate>
@@ -93,19 +93,10 @@
   const consultResult=modal.querySelector('[data-consult-result]');
   const consultSummary=modal.querySelector('[data-consult-summary]');
   const consultStatus=modal.querySelector('[data-consult-status]');
-  const channelNote=modal.querySelector('[data-consult-channel-note]');
   let lastFocus=null;
 
-  function channelFromTrigger(trigger){
-    if(trigger?.classList.contains('floating-contact__phone'))return 'Bạn đang chọn gọi điện — điền nhanh 4 thông tin để Mrs.Miến nắm nhu cầu trước.';
-    if(trigger?.classList.contains('floating-contact__zalo'))return 'Bạn đang chọn Zalo — điền nhanh 4 thông tin rồi gửi cho Mrs.Miến.';
-    if(trigger?.classList.contains('floating-contact__messenger'))return 'Bạn đang chọn Messenger — điền nhanh 4 thông tin rồi nhắn Facebook.';
-    return 'Biểu mẫu tư vấn nhanh — chỉ 4 thông tin, không cần kéo xuống cuối trang.';
-  }
-
-  function openConsult(trigger){
+  function openConsult(){
     lastFocus=document.activeElement;
-    channelNote.textContent=channelFromTrigger(trigger);
     modal.hidden=false;
     document.body.classList.add('consult-open');
     requestAnimationFrame(()=>modal.classList.add('is-open'));
@@ -152,12 +143,13 @@
     ].join('\n');
   }
 
+  // Chỉ các CTA nhận tư vấn mới mở biểu mẫu.
+  // Ba nút nổi Gọi / Zalo / Messenger giữ nguyên hành vi liên hệ trực tiếp theo href.
   document.addEventListener('click',event=>{
     const consultLink=event.target.closest('a[href="#lien-he"]');
-    const floating=event.target.closest('.floating-contact__item');
-    if(consultLink||floating){
+    if(consultLink){
       event.preventDefault();
-      openConsult(floating||consultLink);
+      openConsult();
     }
   });
 
