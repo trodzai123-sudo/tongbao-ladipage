@@ -1,4 +1,2 @@
 User-agent: *
 Allow: /
-
-Sitemap: https://tongbao-ladipage.pages.dev/sitemap.xml

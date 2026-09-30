@@ -95,7 +95,6 @@
   .showcase-topline{font-size:.6rem}
   .showcase-bottom{align-items:start}
   .showcase-bottom>a{max-width:135px;text-align:right}
-  .trust-grid{grid-content:normal}
   .trust-grid>div{padding:15px 10px}
   .trust-grid>div:first-child,.trust-grid>div:last-child{padding-left:10px;padding-right:10px}
   .trust-grid>div:nth-child(odd){border-right:1px solid var(--line)}

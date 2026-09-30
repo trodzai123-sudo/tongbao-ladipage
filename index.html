@@ -3,90 +3,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <script>
-    (function(){
-      var entryHash=location.hash.toLowerCase();
-      var staleContactHash=entryHash==='#lien-he';
-      var mustStartAtTop=!entryHash||entryHash==='#top'||staleContactHash;
-      var root=document.documentElement;
-      var previousBehavior=root.style.scrollBehavior;
-      var active=mustStartAtTop;
-      var timers=[];
-
-      if('scrollRestoration'in history)history.scrollRestoration='manual';
-
-      // A consultation CTA is handled as a modal after the page is ready.
-      // Remove a retained/deep-linked contact fragment before the browser can
-      // resolve it and drag mobile visitors to the contact section.
-      if(staleContactHash){
-        history.replaceState(history.state,'',location.pathname+location.search);
-      }
-
-      function reset(){
-        if(!active)return;
-        root.style.scrollBehavior='auto';
-        root.scrollTop=0;
-        if(document.body)document.body.scrollTop=0;
-        scrollTo(0,0);
-      }
-
-      function schedule(){
-        reset();
-        [0,80,260,700,1400].forEach(function(delay){
-          timers.push(setTimeout(reset,delay));
-        });
-      }
-
-      function stop(){
-        if(!active)return;
-        active=false;
-        timers.forEach(clearTimeout);
-        timers=[];
-        root.style.scrollBehavior=previousBehavior;
-      }
-
-      if(mustStartAtTop){
-        schedule();
-        document.addEventListener('DOMContentLoaded',schedule,{once:true});
-        addEventListener('load',function(){
-          schedule();
-          timers.push(setTimeout(stop,1800));
-        },{once:true});
-        addEventListener('pageshow',function(event){
-          if(event.persisted&&(!location.hash||location.hash==='#top')){
-            active=true;
-            root.style.scrollBehavior='auto';
-            schedule();
-            timers.push(setTimeout(stop,1800));
-          }else{
-            reset();
-          }
-        });
-        ['pointerdown','touchstart','wheel'].forEach(function(type){
-          addEventListener(type,stop,{once:true,passive:true});
-        });
-        addEventListener('keydown',stop,{once:true});
-        addEventListener('hashchange',stop,{once:true});
-      }
-    })();
-  </script>
   <title>TONGBAO | Máy in date, in mã & khắc laser công nghiệp</title>
   <meta name="description" content="TONGBAO tư vấn máy in date, in mã và khắc laser theo vật liệu, nội dung và tốc độ dây chuyền. Gửi mẫu để chọn đúng công nghệ và cấu hình.">
   <meta name="theme-color" content="#061a35">
   <meta name="robots" content="index,follow">
-  <link rel="canonical" href="https://tongbao-ladipage.pages.dev/">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=20260911-2">
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=20260911-2">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=20260930">
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=20260930">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="vi_VN">
   <meta property="og:title" content="TONGBAO | Giải pháp in mã công nghiệp theo dây chuyền">
   <meta property="og:description" content="Máy in date, in mã và khắc laser cho nhà máy. Tư vấn theo mẫu sản phẩm, vật liệu và tốc độ thực tế.">
-  <meta property="og:url" content="https://tongbao-ladipage.pages.dev/">
-  <meta property="og:image" content="https://tongbao-ladipage.pages.dev/assets/images/catalog-products/eb-plus-tongbao-v2.webp">
+  <meta property="og:image" content="assets/images/catalog-products/eb-plus-tongbao-v2.webp">
   <link rel="preload" as="image" href="assets/images/catalog-products/eb-plus-tongbao-v2.webp" fetchpriority="high">
-  <link rel="stylesheet" href="assets/css/main.css?v=20260911-layout">
-  <link rel="stylesheet" href="assets/css/media.css?v=20260911-layout">
-  <link rel="stylesheet" href="assets/css/contact-widget.css?v=20260911-contact1">
+  <link rel="stylesheet" href="assets/css/main.css?v=20260930">
+  <link rel="stylesheet" href="assets/css/media.css?v=20260930">
+  <link rel="stylesheet" href="assets/css/contact-widget.css?v=20260930">
+  <link rel="stylesheet" href="assets/css/completion.css?v=20260930">
 </head>
 <body>
   <a class="skip-link" href="#main">Bỏ qua menu</a>
@@ -107,8 +39,8 @@
         <img src="assets/images/brand/logo.webp" alt="" width="46" height="46">
         <span><strong>TONGBAO</strong><small>Thiết bị & giải pháp công nghiệp</small></span>
       </a>
-      <button class="menu-button" type="button" aria-label="Mở menu" aria-expanded="false" data-menu-button><span></span><span></span><span></span></button>
-      <nav class="nav" data-nav aria-label="Điều hướng chính">
+      <button class="menu-button" type="button" aria-label="Mở menu" aria-expanded="false" aria-controls="main-nav" data-menu-button><span></span><span></span><span></span></button>
+      <nav id="main-nav" class="nav" data-nav aria-label="Điều hướng chính">
         <a href="#giai-phap">Giải pháp</a>
         <a href="#san-pham">Sản phẩm</a>
         <a href="#ung-dung">Ứng dụng</a>
@@ -126,7 +58,7 @@
         <div class="hero-copy">
           <span class="eyebrow">Giải pháp in mã cho nhà máy</span>
           <h1><span>Máy in date &amp; in mã</span><em>Khắc laser công nghiệp</em></h1>
-          <p>Tư vấn đúng công nghệ theo vật liệu, nội dung cần in và tốc độ dây chuyền—giúp doanh nghiệp chọn cấu hình phù hợp ngay từ đầu.</p>
+          <p>Tư vấn đúng công nghệ theo vật liệu, nội dung cần in và tốc độ dây chuyền, giúp doanh nghiệp chọn cấu hình phù hợp ngay từ đầu.</p>
           <ul class="hero-benefits">
             <li><strong>Đúng ứng dụng</strong><span>CIJ, in độ phân giải cao hoặc laser</span></li>
             <li><strong>Đúng bề mặt</strong><span>Nhựa, kim loại, kính, carton, film và nhiều vật liệu khác</span></li>
@@ -179,11 +111,18 @@
     <section class="section catalog-section" id="san-pham">
       <div class="container">
         <div class="catalog-intro reveal">
-          <div><span class="eyebrow">Danh mục đã đối chiếu</span><h2>11 cấu hình sản phẩm đã đối chiếu</h2></div>
-          <div class="catalog-assurance"><span>✓</span><p><strong>Chỉ hiển thị thiết bị TONGBAO cung cấp</strong>Bộ ảnh đồng nhất, thông tin tập trung và dễ so sánh.</p></div>
+          <div><span class="eyebrow">Danh mục TONGBAO</span><h2>Thiết bị cho từng nhu cầu sản xuất</h2></div>
+          <div class="catalog-assurance"><span>✓</span><p><strong>Chỉ hiển thị thiết bị TONGBAO cung cấp</strong>Xem thông số và chọn cấu hình để nhận tư vấn.</p></div>
+        </div>
+        <div class="catalog-tools">
+          <label class="catalog-search"><span>Tìm máy theo model hoặc nhu cầu</span><input type="search" data-product-search placeholder="Ví dụ: EB+, QR, kim loại, laser…" autocomplete="off" maxlength="100" aria-controls="product-grid"></label>
+          <button class="button button-secondary" type="button" data-catalog-reset hidden>Xóa bộ lọc</button>
         </div>
         <div class="filters" data-filters aria-label="Lọc nhóm sản phẩm"></div>
-        <div class="product-grid" data-product-grid></div>
+        <p class="catalog-count" data-product-count role="status" aria-live="polite" aria-atomic="true"></p>
+        <div class="catalog-empty" data-catalog-empty hidden><h3>Chưa tìm thấy cấu hình phù hợp</h3><p>Thử từ khóa khác hoặc xem toàn bộ sản phẩm.</p><button class="button button-secondary" type="button" data-catalog-reset>Xem tất cả</button></div>
+        <div class="product-grid" id="product-grid" data-product-grid></div>
+        <noscript><p>Gọi <a href="tel:0337018271">0337 018 271</a> để nhận thông số và tư vấn sản phẩm. Bật JavaScript để sử dụng bộ lọc và biểu mẫu.</p></noscript>
         <div class="catalog-cta reveal">
           <div><strong>Chưa biết model nào phù hợp?</strong><span>Gửi vật liệu, nội dung cần in và tốc độ dây chuyền để kỹ thuật khoanh đúng nhóm máy.</span></div>
           <a class="button button-primary" href="#lien-he">Nhận đề xuất cấu hình</a>
@@ -221,7 +160,7 @@
             <div><b>03</b><p><strong>Dây chuyền</strong>Tốc độ, vị trí lắp và khoảng cách in.</p></div>
             <div><b>04</b><p><strong>Mục tiêu</strong>Mua mới, thay máy cũ hoặc cần chạy thử mẫu.</p></div>
           </div>
-          <a class="button button-light" href="#lien-he">Mô tả nhu cầu trong 2 phút</a>
+          <a class="button button-light" href="#lien-he">Nhận tư vấn theo nhu cầu</a>
         </div>
       </div>
     </section>
@@ -263,23 +202,27 @@
           <div class="contact-points"><span>✓ Tư vấn theo vật liệu</span><span>✓ Đề xuất theo dây chuyền</span><span>✓ Hỗ trợ phương án lắp</span></div>
         </div>
 
-        <form class="lead-form reveal" data-lead-form novalidate>
-          <div class="form-head"><div><span>Yêu cầu tư vấn</span><small>Điền trong khoảng 2 phút</small></div><strong>* Thông tin bắt buộc</strong></div>
-          <div class="form-grid">
-            <label><span>Họ và tên *</span><input name="name" autocomplete="name" required placeholder="Nguyễn Văn A"><small data-error-for="name"></small></label>
-            <label><span>Số điện thoại *</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="09xx xxx xxx"><small data-error-for="phone"></small></label>
-            <label><span>Công ty / nhà máy</span><input name="company" autocomplete="organization" placeholder="Tên doanh nghiệp"></label>
-            <label><span>Khu vực</span><input name="region" autocomplete="address-level1" placeholder="Tỉnh / thành phố"></label>
-            <label class="form-span"><span>Sản phẩm hoặc vật liệu cần in *</span><input name="material" required placeholder="Ví dụ: túi nhựa, chai PET, ống thép..."><small data-error-for="material"></small></label>
-            <label><span>Nội dung cần in</span><select name="content"><option value="">Chọn nội dung</option><option>Ngày sản xuất / hạn dùng</option><option>Số lô / serial</option><option>QR / mã vạch</option><option>Logo / đồ họa</option><option>Khắc vĩnh viễn</option></select></label>
-            <label><span>Nhu cầu hiện tại</span><select name="need"><option value="">Chọn nhu cầu</option><option>Mua máy mới</option><option>Thay máy cũ</option><option>Cần test mẫu</option><option>Cần tư vấn thêm</option></select></label>
-            <label class="form-span"><span>Ghi chú về dây chuyền</span><textarea name="note" rows="3" placeholder="Tốc độ, vị trí lắp, kích thước vùng in hoặc model đang dùng..."></textarea></label>
-          </div>
-          <input type="hidden" name="utm_source"><input type="hidden" name="utm_medium"><input type="hidden" name="utm_campaign">
-          <button class="button button-primary form-submit" type="submit">Tạo nội dung gửi tư vấn</button>
-          <p class="form-status" data-form-status aria-live="polite"></p>
-          <div class="form-result" data-form-result hidden><h3>Nội dung đã sẵn sàng</h3><pre data-lead-summary></pre><div class="button-row"><button class="button button-secondary" type="button" data-copy-lead>Sao chép nội dung</button><a class="button button-zalo" href="https://zalo.me/0337018271" target="_blank" rel="noopener">Mở Zalo gửi Mrs.Miến</a></div></div>
-        </form>
+        <div data-form-home>
+          <form class="lead-form" data-lead-form novalidate>
+            <div class="form-head"><div><span>Yêu cầu tư vấn</span><small>4 thông tin bắt buộc · khoảng 30 giây</small></div><strong>* Bắt buộc</strong></div>
+            <div class="form-grid">
+              <label><span>Họ và tên *</span><input name="name" autocomplete="name" required maxlength="100" placeholder="Nguyễn Văn A" aria-describedby="error-name"><small id="error-name" data-error-for="name"></small></label>
+              <label><span>Số di động *</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" required maxlength="20" placeholder="09xx xxx xxx" aria-describedby="error-phone"><small id="error-phone" data-error-for="phone"></small></label>
+              <label><span>Nội dung cần in *</span><select name="content" required aria-describedby="error-content"><option value="">Chọn nội dung</option><option>Ngày sản xuất / hạn dùng</option><option>Số lô / serial</option><option>QR / mã vạch</option><option>Logo / đồ họa</option><option>Khắc vĩnh viễn</option></select><small id="error-content" data-error-for="content"></small></label>
+              <label><span>Nhu cầu hiện tại *</span><select name="need" required aria-describedby="error-need"><option value="">Chọn nhu cầu</option><option>Mua máy mới</option><option>Thay máy cũ</option><option>Cần test mẫu</option><option>Cần tư vấn thêm</option></select><small id="error-need" data-error-for="need"></small></label>
+              <label class="form-span"><span>Sản phẩm quan tâm</span><select name="product"><option value="">Cần tư vấn chọn máy</option></select></label>
+            </div>
+            <details class="form-details"><summary>Bổ sung vật liệu và yêu cầu khác (không bắt buộc)</summary><div class="form-grid">
+              <label class="form-span"><span>Vật liệu / sản phẩm cần in</span><input name="material" maxlength="200" placeholder="Ví dụ: chai PET, ống thép, hộp giấy…"></label>
+              <label class="form-span"><span>Ghi chú</span><textarea name="note" rows="3" maxlength="1500" placeholder="Kích thước vùng in, tốc độ dây chuyền hoặc model đang dùng…"></textarea></label>
+            </div></details>
+            <p class="form-privacy">Thông tin chỉ được tạo trên thiết bị của bạn. TONGBAO nhận được yêu cầu khi bạn gửi qua Zalo hoặc Messenger.</p>
+            <button class="button button-primary form-submit" type="submit">Tạo nội dung gửi tư vấn</button>
+            <p class="form-status" data-form-status aria-live="polite" aria-atomic="true"></p>
+            <div class="form-result" data-form-result hidden><h3>Gửi yêu cầu qua Zalo</h3><pre data-lead-summary></pre><div class="button-row"><button class="button button-secondary" type="button" data-copy-lead>1. Sao chép nội dung</button><a class="button button-zalo" href="https://zalo.me/0337018271" target="_blank" rel="noopener">2. Mở Zalo để gửi</a></div><a class="form-messenger" href="https://m.me/61593898667207" target="_blank" rel="noopener">Hoặc dán nội dung vào Messenger</a></div>
+            <noscript><p>Biểu mẫu cần JavaScript. Bạn có thể <a href="tel:0337018271">gọi trực tiếp 0337 018 271</a>.</p></noscript>
+          </form>
+        </div>
       </div>
     </section>
   </main>
@@ -309,11 +252,19 @@
     </a>
   </div>
 
-  <div class="modal" data-modal hidden role="dialog" aria-modal="true" aria-label="Chi tiết sản phẩm"><div class="modal-dialog"><button class="modal-close" type="button" data-modal-close aria-label="Đóng">×</button><div data-modal-body></div></div></div>
+  <div class="modal" data-modal hidden role="dialog" aria-modal="true" aria-labelledby="product-title"><div class="modal-dialog"><button class="modal-close" type="button" data-modal-close aria-label="Đóng">×</button><div data-modal-body></div></div></div>
 
-  <script src="assets/js/product-data.js?v=20260911-final1" defer></script>
-  <script src="assets/js/catalog.js?v=20260911-scrollfix1" defer></script>
-  <script src="assets/js/form.js?v=20260911-layout" defer></script>
-  <script src="assets/js/main.js?v=20260911-scrollfix2" defer></script>
+  <div class="consult-modal" data-consult-modal hidden role="dialog" aria-modal="true" aria-labelledby="consult-title">
+    <div class="consult-dialog">
+      <button class="consult-close" type="button" aria-label="Đóng biểu mẫu" data-consult-close>×</button>
+      <div class="consult-head"><span class="eyebrow">Tư vấn theo nhu cầu</span><h2 id="consult-title" tabindex="-1">Chọn máy phù hợp với dây chuyền.</h2><p>Chuẩn bị yêu cầu, sau đó gửi cho Mrs.Miến qua Zalo hoặc Messenger.</p></div>
+      <div class="consult-body" data-consult-slot></div>
+    </div>
+  </div>
+  <script src="assets/js/site.js?v=20260930" defer></script>
+  <script src="assets/js/product-data.js?v=20260930" defer></script>
+  <script src="assets/js/catalog.js?v=20260930" defer></script>
+  <script src="assets/js/form.js?v=20260930" defer></script>
+  <script src="assets/js/main.js?v=20260930" defer></script>
 </body>
 </html>

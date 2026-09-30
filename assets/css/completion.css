@@ -1,0 +1,79 @@
+/* Final usability pass; preserve TONGBAO's existing visual identity. */
+[hidden]{display:none!important}
+html{scrollbar-gutter:stable}
+body.dialog-open{overflow:hidden}
+:focus-visible{outline:3px solid #0a67e8;outline-offset:4px}
+.hero :focus-visible,.site-footer :focus-visible{outline-color:#78ddff}
+.skip-link{z-index:1200}
+.hero h1{line-height:1.12}
+.hero h1>span{white-space:normal}
+.section-heading h2,.catalog-intro h2,.selection-copy h2,.faq-intro h2,.contact-copy h2{line-height:1.17}
+.hero-benefits strong,.hero-benefits span,.trust-grid strong,.trust-grid small,.nav a,.solution-card li,.solution-card button,.catalog-assurance p,.catalog-assurance strong,.selection-list p,.selection-list strong,.contact-cards small,.contact-cards span,.contact-points span,.footer-bottom{font-size:.875rem}
+.product-body>p,.solution-card>p,.application-card p,.process-grid p,.faq-list p,.footer-grid p{font-size:1rem}
+.mini-specs li,.filter-button,.form-grid label>span,.form-grid label>small,.form-head small,.form-head>strong,.form-status,.form-result pre,.form-result .button,.spec-row,.modal-use,.modal-note,.floating-contact__text strong{font-size:.875rem}
+.product-chip,.product-gallery-count{font-size:.75rem}
+.showcase-topline,.showcase-chip,.showcase-bottom div span,.showcase-bottom>a{font-size:.8125rem}
+.button,.filter-button,.menu-button,.product-gallery__thumb{min-height:44px}
+.catalog-tools{display:flex;align-items:end;gap:16px;margin:30px 0 20px}
+.catalog-search{display:grid;gap:8px;flex:1;max-width:650px;font-weight:700;font-size:.875rem}
+.catalog-search input{width:100%;min-height:50px;border:1px solid #b5c5d9;border-radius:10px;background:#fff;padding:12px 15px;font:inherit;font-size:1rem;color:var(--ink)}
+.catalog-search input:focus{border-color:var(--blue);outline:3px solid #c0dcff;outline-offset:1px}
+.filters{margin-bottom:15px}
+.filter-button{display:inline-flex;align-items:center;justify-content:center;gap:9px}
+.filter-button>span{font-size:.75rem;opacity:.8}
+.catalog-count{font-size:.875rem;color:#495d78;margin:0 0 22px;min-height:24px}
+.catalog-empty{padding:36px 20px;margin-bottom:20px;text-align:center;background:#fff;border:1px solid var(--line);border-radius:16px}
+.catalog-empty h3{margin:0 0 8px}
+.product-card{display:flex;flex-direction:column}
+.product-body{display:flex;flex-direction:column;flex:1}
+.product-body>p{min-height:0}
+.mini-specs{margin-bottom:20px}
+.card-link{margin-top:auto;min-height:44px;text-align:left;font-size:1rem;border-top:1px solid var(--line);padding-top:12px}
+.card-link:hover{text-decoration:underline}
+.spec-table{margin-left:0}
+.spec-row dt{font-weight:750}
+.spec-row dd{margin:0;color:var(--muted);overflow-wrap:anywhere}
+.modal-note{background:var(--soft);border-left:3px solid var(--blue);padding:14px;line-height:1.65}
+.modal-actions{display:flex;flex-wrap:wrap;gap:10px}
+.modal-dialog,.consult-dialog{max-height:92vh;max-height:92dvh;overscroll-behavior:contain}
+.modal-close,.consult-close{width:44px;height:44px;min-height:44px}
+.consult-dialog{width:min(700px,100%)}
+.consult-head h2{line-height:1.2}
+.consult-body{padding:0}
+.consult-body .lead-form{border:0;box-shadow:none;border-radius:0;padding:22px 28px 28px}
+.lead-form .form-grid{grid-template-columns:1fr 1fr}
+.lead-form .form-span{grid-column:1/-1}
+.form-grid input,.form-grid select,.form-grid textarea{min-height:48px;font-size:1rem}
+.form-head small{display:block;margin-top:5px}
+.form-details{margin-top:18px;border-top:1px solid var(--line);padding-top:12px}
+.form-details summary{padding:8px 0;font-size:.875rem;font-weight:700;cursor:pointer}
+.form-details .form-grid{margin-top:14px}
+.form-privacy{font-size:.875rem;line-height:1.6;color:#52627a;margin:18px 0 0}
+.form-result pre{overflow-wrap:anywhere}
+.form-messenger{display:inline-block;color:#074cae;font-size:.875rem;margin-top:14px;text-decoration:underline}
+.image-unavailable{display:grid;place-items:center;min-height:140px;padding:26px;color:#495d78;background:var(--soft);text-align:center;font-size:.875rem}
+.product-media .image-unavailable{height:100%}
+.product-gallery__main img{object-fit:contain!important}
+@media(max-width:760px){
+  body{padding-bottom:calc(74px + env(safe-area-inset-bottom))}
+  .floating-contact{left:0;right:0;bottom:0;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line);box-shadow:0 -6px 24px #061a3514}
+  .floating-contact__item{width:auto;min-width:0;height:50px;min-height:50px;border-radius:10px;padding:6px;gap:5px;box-shadow:none}
+  .floating-contact__icon{width:24px;height:24px;flex-basis:24px;font-size:.7rem;background:none}
+  .floating-contact__text{display:block}
+  .floating-contact__text strong{font-size:.75rem;white-space:normal}
+  .floating-contact__text small{display:none}
+  .catalog-tools{display:grid;gap:10px}
+  .catalog-tools .button{justify-self:start;width:auto}
+  .catalog-search{max-width:none}
+  .filters{display:flex;flex-wrap:wrap}
+  .filter-button{width:auto;padding:8px 12px;font-size:.875rem}
+  .lead-form .form-grid{grid-template-columns:1fr}
+  .lead-form .form-span{grid-column:auto}
+  .consult-body .lead-form{padding:18px}
+  .modal-actions{display:grid}
+  .modal-actions .button{width:100%}
+  .utility-inner a{font-size:.75rem}
+  .utility-inner a+a{padding-left:10px}
+}
+@media(max-width:360px){.utility-inner a+a{border:0}.utility-inner>div{gap:4px}.utility-inner a{font-size:.6875rem}.brand small{font-size:.75rem}.floating-contact__icon{display:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}

@@ -1,91 +1,88 @@
-(function(){
-  const products=window.TONGBAO_PRODUCTS||[];
-  const grid=document.querySelector('[data-product-grid]');
-  const filters=document.querySelector('[data-filters]');
-  const modal=document.querySelector('[data-modal]');
-  const body=document.querySelector('[data-modal-body]');
-  const close=document.querySelector('[data-modal-close]');
-  const groups=['Tất cả',...new Set(products.map(item=>item.group))];
-  let closeTimer;
-  const canAutoFocus=matchMedia('(hover:hover) and (pointer:fine)').matches;
-  const focusWithoutScroll=element=>{
-    if(!element)return;
-    try{element.focus({preventScroll:true})}
-    catch{if(canAutoFocus)element.focus()}
-  };
-
-  const imagesFor=item=>Array.isArray(item.gallery)&&item.gallery.length?item.gallery:[item.image];
-  const card=item=>{
-    const images=imagesFor(item);
-    const galleryClass=images.length>1?' product-media--gallery':'';
-    const count=images.length>1?`<span class="product-gallery-count">${images.length} ảnh</span>`:'';
-    return `<article class="product-card reveal" data-product-id="${item.id}" data-open-product="${item.id}" role="button" tabindex="0" aria-label="Xem thông số ${item.name}" style="cursor:pointer"><div class="product-media${galleryClass}"><img src="${item.image}" alt="${item.name}" width="1000" height="750" loading="lazy" decoding="async"><span class="product-chip">${item.group}</span><span class="product-source">${item.source}</span>${count}</div><div class="product-body"><h3>${item.name}</h3><p>${item.short}</p><ul class="mini-specs">${item.highlights.map(value=>`<li>${value}</li>`).join('')}</ul><span class="card-link" aria-hidden="true">Xem thông số →</span></div></article>`;
-  };
-
-  function render(group='Tất cả'){
-    if(!grid)return;
-    grid.innerHTML=products.filter(item=>group==='Tất cả'||item.group===group).map(card).join('');
-    window.bindReveal?.();
-  }
-
-  function setFilter(group){
-    filters?.querySelectorAll('button').forEach(button=>button.classList.toggle('is-active',button.dataset.filter===group));
-    render(group);
-  }
-
-  function galleryMarkup(item){
-    const images=imagesFor(item);
-    if(images.length===1)return `<img src="${images[0]}" alt="${item.name}" width="1000" height="750">`;
-    return `<div class="product-gallery">
-      <div class="product-gallery__main"><img src="${images[0]}" alt="${item.name}" width="1000" height="750" data-gallery-main></div>
-      <div class="product-gallery__thumbs" aria-label="Ảnh sản phẩm ${item.name}">
-        ${images.map((src,index)=>`<button class="product-gallery__thumb${index===0?' is-active':''}" type="button" data-gallery-src="${src}" aria-label="Xem ảnh ${index+1}"><img src="${src}" alt="" loading="lazy" decoding="async"></button>`).join('')}
+(function () {
+  'use strict';
+  const products = window.TONGBAO_PRODUCTS || [];
+  const { escape: esc, normalize, openDialog, closeDialog, track, scrollBehavior } = window.Tongbao;
+  const grid = document.querySelector('[data-product-grid]');
+  const filters = document.querySelector('[data-filters]');
+  const search = document.querySelector('[data-product-search]');
+  const count = document.querySelector('[data-product-count]');
+  const empty = document.querySelector('[data-catalog-empty]');
+  const reset = document.querySelector('[data-catalog-reset]');
+  const modal = document.querySelector('[data-modal]');
+  const body = document.querySelector('[data-modal-body]');
+  if (!grid || !modal) return;
+  const groups = ['Tất cả', ...new Set(products.map(item => item.group))];
+  let group = 'Tất cả';
+  const imagesFor = item => item.gallery?.length ? item.gallery : [item.image];
+  const searchable = new Map(products.map(item => [item.id, normalize([item.name, item.group, item.short, item.uses, ...item.highlights, ...item.specs.flat()].join(' '))]));
+  function card(item) {
+    const images = imagesFor(item);
+    return `<article class="product-card" data-product-id="${esc(item.id)}">
+      <div class="product-media${images.length > 1 ? ' product-media--gallery' : ''}">
+        <img src="${esc(item.image)}" alt="${esc(item.name)}" width="1000" height="750" loading="lazy" decoding="async">
+        <span class="product-chip">${esc(item.group)}</span>
+        ${images.length > 1 ? `<span class="product-gallery-count">${images.length} ảnh</span>` : ''}
       </div>
-    </div>`;
+      <div class="product-body"><h3>${esc(item.name)}</h3><p>${esc(item.short)}</p>
+        <ul class="mini-specs">${item.highlights.map(value => `<li>${esc(value)}</li>`).join('')}</ul>
+        <button class="card-link" type="button" data-open-product="${esc(item.id)}" aria-label="Xem thông số ${esc(item.name)}">Xem thông số</button>
+      </div></article>`;
   }
-
-  function openProduct(id){
-    const item=products.find(product=>product.id===id);if(!item||!modal||!body)return;
-    const note=item.note?`<p class="modal-note">${item.note}</p>`:'';
-    body.innerHTML=`<div class="modal-product">${galleryMarkup(item)}<div><span class="eyebrow">${item.group}</span><h2>${item.name}</h2><p class="modal-lead">${item.short}</p><div class="spec-table">${item.specs.map(([key,value])=>`<div class="spec-row"><strong>${key}</strong><span>${value}</span></div>`).join('')}</div><p class="modal-use"><strong>Ứng dụng:</strong> ${item.uses}</p>${note}<div class="modal-actions"><a class="button button-primary" href="#lien-he" data-modal-contact>Gửi mẫu để tư vấn</a></div></div></div>`;
-    clearTimeout(closeTimer);modal.hidden=false;modal.classList.remove('is-open');document.body.classList.add('modal-open');void modal.offsetWidth;modal.classList.add('is-open');if(canAutoFocus)focusWithoutScroll(close);
+  function render() {
+    const words = normalize(search.value.trim()).split(/\s+/).filter(Boolean);
+    const result = products.filter(item => (group === 'Tất cả' || item.group === group) && words.every(word => searchable.get(item.id).includes(word)));
+    grid.innerHTML = result.map(card).join('');
+    count.textContent = `${result.length} / ${products.length} cấu hình${group === 'Tất cả' ? '' : ` · ${group}`}`;
+    empty.hidden = result.length !== 0;
+    reset.hidden = group === 'Tất cả' && !search.value;
+    filters.querySelectorAll('button').forEach(button => {
+      const selected = button.dataset.filter === group;
+      button.classList.toggle('is-active', selected);
+      button.setAttribute('aria-pressed', String(selected));
+    });
   }
-
-  function closeModal(){
-    if(!modal||modal.hidden)return;
-    modal.classList.remove('is-open');document.body.classList.remove('modal-open');clearTimeout(closeTimer);closeTimer=setTimeout(()=>modal.hidden=true,180);
-  }
-
-  if(filters)filters.innerHTML=groups.map((group,index)=>`<button class="filter-button${index?'':' is-active'}" type="button" data-filter="${group}">${group}</button>`).join('');
+  filters.innerHTML = groups.map(value => `<button class="filter-button" type="button" data-filter="${esc(value)}" aria-pressed="false">${esc(value)} <span>${value === 'Tất cả' ? products.length : products.filter(item => item.group === value).length}</span></button>`).join('');
   render();
-
-  filters?.addEventListener('click',event=>{
-    const button=event.target.closest('[data-filter]');if(button)setFilter(button.dataset.filter);
+  search.addEventListener('input', render);
+  filters.addEventListener('click', event => {
+    const button = event.target.closest('[data-filter]');
+    if (button) { group = button.dataset.filter; render(); track('product_filter', { product_group: group }); }
   });
-
-  document.addEventListener('click',event=>{
-    const galleryThumb=event.target.closest('[data-gallery-src]');
-    if(galleryThumb&&body){
-      const main=body.querySelector('[data-gallery-main]');
-      if(main){
-        main.src=galleryThumb.dataset.gallerySrc;
-        body.querySelectorAll('[data-gallery-src]').forEach(button=>button.classList.toggle('is-active',button===galleryThumb));
-      }
-      return;
+  document.querySelectorAll('[data-catalog-reset]').forEach(button => button.addEventListener('click', () => {
+    group = 'Tất cả'; search.value = ''; render(); search.focus({ preventScroll: true });
+  }));
+  function openProduct(id, trigger) {
+    const item = products.find(product => product.id === id);
+    if (!item) return;
+    const images = imagesFor(item);
+    const gallery = `<div class="product-gallery"><div class="product-gallery__main"><img src="${esc(images[0])}" alt="${esc(item.name)} — ảnh 1" width="1000" height="750" data-gallery-main></div>${images.length > 1 ? `<div class="product-gallery__thumbs" aria-label="Ảnh ${esc(item.name)}">${images.map((src, index) => `<button class="product-gallery__thumb${index === 0 ? ' is-active' : ''}" type="button" data-gallery-src="${esc(src)}" data-gallery-index="${index + 1}" aria-label="Xem ảnh ${index + 1}" aria-pressed="${index === 0}"><img src="${esc(src)}" alt="" width="120" height="90" loading="lazy"></button>`).join('')}</div>` : ''}</div>`;
+    body.innerHTML = `<div class="modal-product">${gallery}<div><span class="eyebrow">${esc(item.group)}</span><h2 id="product-title" tabindex="-1">${esc(item.name)}</h2><p class="modal-lead">${esc(item.short)}</p><dl class="spec-table">${item.specs.map(([key, value]) => `<div class="spec-row"><dt>${esc(key)}</dt><dd>${esc(value)}</dd></div>`).join('')}</dl><p class="modal-use"><strong>Ứng dụng:</strong> ${esc(item.uses)}</p>${item.note ? `<p class="modal-note">${esc(item.note)}</p>` : ''}<div class="modal-actions"><button class="button button-primary" type="button" data-consult-product="${esc(item.id)}">Tư vấn cấu hình này</button><a class="button button-secondary" href="tel:0337018271">Gọi tư vấn</a></div></div></div>`;
+    openDialog(modal, { trigger, initialFocus: body.querySelector('h2') });
+    track('product_view', { product_id: item.id, product_group: item.group });
+  }
+  document.addEventListener('click', event => {
+    const trigger = event.target.closest('[data-open-product]');
+    if (trigger) openProduct(trigger.dataset.openProduct, trigger);
+    const fit = event.target.closest('[data-fit-group]');
+    if (fit) {
+      group = fit.dataset.fitGroup; search.value = ''; render();
+      document.querySelector('#san-pham').scrollIntoView({ behavior: scrollBehavior() });
+      search.focus({ preventScroll: true });
     }
-    const trigger=event.target.closest('[data-open-product]');if(trigger)openProduct(trigger.dataset.openProduct);
-    const fit=event.target.closest('[data-fit-group]');if(fit){setFilter(fit.dataset.fitGroup);document.querySelector('#san-pham')?.scrollIntoView({behavior:'smooth'});}
-    if(event.target.closest('[data-modal-contact]'))closeModal();
-  });
-
-  close?.addEventListener('click',closeModal);
-  modal?.addEventListener('click',event=>{if(event.target===modal)closeModal();});
-  document.addEventListener('keydown',event=>{
-    if(event.key==='Escape')closeModal();
-    const trigger=event.target.closest?.('[data-open-product]');
-    if(trigger&&(event.key==='Enter'||event.key===' ')){
-      event.preventDefault();
-      openProduct(trigger.dataset.openProduct);
+    const thumb = event.target.closest('[data-gallery-src]');
+    if (thumb) {
+      const main = body.querySelector('[data-gallery-main]');
+      main.hidden = false;
+      delete main.dataset.failed;
+      main.parentElement.querySelector('.image-unavailable')?.remove();
+      main.src = thumb.dataset.gallerySrc;
+      main.alt = `${body.querySelector('h2').textContent} — ảnh ${thumb.dataset.galleryIndex}`;
+      body.querySelectorAll('[data-gallery-src]').forEach(button => {
+        button.classList.toggle('is-active', button === thumb);
+        button.setAttribute('aria-pressed', String(button === thumb));
+      });
     }
   });
+  document.querySelector('[data-modal-close]').addEventListener('click', () => closeDialog());
+  modal.addEventListener('click', event => { if (event.target === modal) closeDialog(); });
 })();
