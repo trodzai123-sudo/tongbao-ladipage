@@ -1,0 +1,4 @@
+import {isAdmin} from "@/lib/admin-auth";
+import {getStorage,json} from "@/lib/storage";
+export const dynamic="force-dynamic";
+export async function GET(_request:Request,{params}:{params:Promise<{id:string}>}){if(!await isAdmin())return json({message:"Không có quyền truy cập."},403);const {id}=await params;const {db,bucket}=getStorage();const f=await db.prepare("SELECT object_key,name,mime FROM attachments WHERE id=?").bind(id).first<{object_key:string;name:string;mime:string}>();if(!f)return json({message:"Không tìm thấy tài liệu."},404);const object=await bucket.get(f.object_key);if(!object)return json({message:"Tài liệu hiện chưa sẵn sàng."},404);return new Response(object.body,{headers:{"Content-Type":f.mime,"Content-Disposition":`attachment; filename*=UTF-8''${encodeURIComponent(f.name)}`,"Cache-Control":"no-store","X-Content-Type-Options":"nosniff","Content-Security-Policy":"sandbox"}})}
